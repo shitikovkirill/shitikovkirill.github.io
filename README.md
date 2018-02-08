@@ -1,0 +1,5 @@
+# Mmag
+
+```
+docker-compose up
+```

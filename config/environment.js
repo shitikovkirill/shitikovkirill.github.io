@@ -45,7 +45,7 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     ENV.locationType = 'hash';
-    ENV.rootURL = '/shitikovkirill-github-io/';
+    ENV.rootURL = '/';
     // here you can enable a production-specific feature
   }
 

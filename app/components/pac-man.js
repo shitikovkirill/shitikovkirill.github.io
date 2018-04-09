@@ -29,33 +29,27 @@ export default Component.extend(KeyboardShortcuts, {
 
     ctx.clearRect(0, 0, screenWidth, screenHeight);
   },
+  movePacMan: function (direction, amount) {
+    this.incrementProperty(direction, amount);
+    this.clearScreen();
+    this.drawCircle();
+  },
   keyboardShortcuts: {
     up: function () {
       console.log('up');
-      this.decrementProperty('y', this.get('squareSize'));
-      this.clearScreen();
-      this.drawCircle();
-
+      this.movePacMan('y', -1 * this.get('squareSize'));
     },
     down: function () {
       console.log('down');
-      this.incrementProperty('y', this.get('squareSize'));
-      this.clearScreen();
-      this.drawCircle();
-
+      this.movePacMan('y', this.get('squareSize'));
     },
     left: function () {
       console.log('left');
-      this.decrementProperty('x', this.get('squareSize'));
-      this.clearScreen();
-      this.drawCircle();
-
+      this.movePacMan('x', -1 * this.get('squareSize'));
     },
     right: function () {
       console.log('right');
-      this.incrementProperty('x', this.get('squareSize'));
-      this.clearScreen();
-      this.drawCircle();
+      this.movePacMan('x', this.get('squareSize'));
     }
   }
 });

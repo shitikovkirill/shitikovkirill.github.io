@@ -21,28 +21,40 @@ export default Component.extend(KeyboardShortcuts, {
     ctx.closePath();
     ctx.fill();
   },
+  clearScreen: function () {
+    let canvas = document.getElementById("myCanvas");
+    let ctx = canvas.getContext("2d");
+    let screenWidth = 800;
+    let screenHeight = 600;
+
+    ctx.clearRect(0, 0, screenWidth, screenHeight);
+  },
   keyboardShortcuts: {
     up: function () {
       console.log('up');
       this.decrementProperty('y', this.get('squareSize'));
+      this.clearScreen();
       this.drawCircle();
 
     },
     down: function () {
       console.log('down');
       this.incrementProperty('y', this.get('squareSize'));
+      this.clearScreen();
       this.drawCircle();
 
     },
     left: function () {
       console.log('left');
-      this.decrementProperty('x', this.get('squareSize'))
+      this.decrementProperty('x', this.get('squareSize'));
+      this.clearScreen();
       this.drawCircle();
 
     },
     right: function () {
       console.log('right');
       this.incrementProperty('x', this.get('squareSize'));
+      this.clearScreen();
       this.drawCircle();
     }
   }

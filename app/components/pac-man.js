@@ -14,6 +14,12 @@ export default Component.extend(KeyboardShortcuts, {
     let ctx = canvas.getContext("2d");
     return ctx;
   }),
+  screenPixelWidht: computed(function () {
+    return this.get('screenWidth') * this.get('squareSize');
+  }),
+  screenPixelHeight: computed(function () {
+    return this.get('screenHeight') * this.get('squareSize');
+  }),
   didInsertElement: function () {
     this.drawCircle();
   },
@@ -34,14 +40,11 @@ export default Component.extend(KeyboardShortcuts, {
   },
   clearScreen: function () {
     let ctx = this.get('ctx');
-    let screenPixelWidth = this.get('screenWidth') * this.get('squareSize');
-    let screenPixelHeight = this.get('screenHeight') * this.get('squareSize');
-
-    ctx.clearRect(0, 0, screenPixelWidth, screenPixelHeight);
+    ctx.clearRect(0, 0, this.get('screenPixelWidth'), this.get('screenPixelHeight'));
   },
   movePacMan: function (direction, amount) {
     this.incrementProperty(direction, amount);
-    
+
     if(this.collidedWithBorder()){
       this.decrementProperty(direction, amount);
     }

@@ -4,6 +4,7 @@ import {computed} from '@ember/object';
 import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component'
 
 export default Component.extend(KeyboardShortcuts, {
+  score: 0,
   x: 1,
   y: 2,
   squareSize: 40,
@@ -108,9 +109,21 @@ export default Component.extend(KeyboardShortcuts, {
       this.decrementProperty(direction, amount);
     }
 
+    this.processAnyPellets();
+
     this.clearScreen();
     this.drawPac();
     this.drawGrid();
+  },
+  processAnyPellets(){
+    let x = this.get('x');
+    let y = this.get('y');
+    let grid = this.get('grid');
+
+    if(grid[y][x] == 2){
+      grid[y][x] = 0;
+      this.incrementProperty('score')
+    }
   },
   keyboardShortcuts: {
     up: function () {

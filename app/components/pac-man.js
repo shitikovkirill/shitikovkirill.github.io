@@ -42,7 +42,7 @@ export default Component.extend(KeyboardShortcuts, {
     return this.get('screenHeight') * this.get('squareSize');
   }),
   didInsertElement: function () {
-    this.drawWalls();
+    this.drawGrid();
     this.drawCircle();
   },
   drawCircle: function () {
@@ -60,35 +60,45 @@ export default Component.extend(KeyboardShortcuts, {
     ctx.closePath();
     ctx.fill();
   },
-  drawWalls: function(){
-    let squareSize = this.get('squareSize');
-    let ctx = this.get('ctx');
-    ctx.fillStyle = '#000';
-
+  drawGrid: function(){
+    debugger
     let grid = this.get('grid');
     grid.forEach(function (row, rowIndex) {
       row.forEach(function (cell, columnIndex) {
           if(cell === 1){
-            ctx.fillRect(
-              columnIndex * squareSize,
-              rowIndex * squareSize,
-              squareSize,
-              squareSize
-            )
+            this.drawWalls(columnIndex, rowIndex);
           }
-
           if(cell === 2){
-            let pixelX = (columnIndex + 1 / 2) * squareSize;
-            let pixelY = (rowIndex + 1 / 2) * squareSize;
-
-            ctx.beginPath();
-            ctx.arc(pixelX, pixelY, squareSize / 6, 0, Math.PI * 2, false);
-            ctx.closePath();
-            ctx.fill();
+            this.drawPallet(columnIndex, rowIndex);
           }
         }
       );
     })
+  },
+  drawWalls: function(x, y){
+    let squareSize = this.get('squareSize');
+    let ctx = this.get('ctx');
+    ctx.fillStyle = '#000';
+
+    ctx.fillRect(
+      x * squareSize,
+      y * squareSize,
+      squareSize,
+      squareSize
+    );
+  },
+  drawPallet: function(x, y){
+    let squareSize = this.get('squareSize');
+    let ctx = this.get('ctx');
+    ctx.fillStyle = '#000';
+
+    let pixelX = (x + 1 / 2) * squareSize;
+    let pixelY = (y + 1 / 2) * squareSize;
+
+    ctx.beginPath();
+    ctx.arc(pixelX, pixelY, squareSize / 6, 0, Math.PI * 2, false);
+    ctx.closePath();
+    ctx.fill();
   },
   clearScreen: function () {
     let ctx = this.get('ctx');
@@ -103,7 +113,7 @@ export default Component.extend(KeyboardShortcuts, {
 
     this.clearScreen();
     this.drawCircle();
-    this.drawWalls();
+    //this.drawGrid();
   },
   keyboardShortcuts: {
     up: function () {

@@ -61,10 +61,9 @@ export default Component.extend(KeyboardShortcuts, {
     ctx.fill();
   },
   drawGrid: function(){
-    debugger
     let grid = this.get('grid');
-    grid.forEach(function (row, rowIndex) {
-      row.forEach(function (cell, columnIndex) {
+    grid.forEach((row, rowIndex) => {
+      row.forEach((cell, columnIndex) => {
           if(cell === 1){
             this.drawWalls(columnIndex, rowIndex);
           }
@@ -75,7 +74,7 @@ export default Component.extend(KeyboardShortcuts, {
       );
     })
   },
-  drawWalls: function(x, y){
+  drawWalls(x, y) {
     let squareSize = this.get('squareSize');
     let ctx = this.get('ctx');
     ctx.fillStyle = '#000';
@@ -87,7 +86,7 @@ export default Component.extend(KeyboardShortcuts, {
       squareSize
     );
   },
-  drawPallet: function(x, y){
+  drawPallet(x, y) {
     let squareSize = this.get('squareSize');
     let ctx = this.get('ctx');
     ctx.fillStyle = '#000';
@@ -113,7 +112,7 @@ export default Component.extend(KeyboardShortcuts, {
 
     this.clearScreen();
     this.drawCircle();
-    //this.drawGrid();
+    this.drawGrid();
   },
   keyboardShortcuts: {
     up: function () {

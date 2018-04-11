@@ -5,6 +5,7 @@ import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component'
 
 export default Component.extend(KeyboardShortcuts, {
   score: 0,
+  levelNumber: 1,
   x: 1,
   y: 2,
   squareSize: 40,
@@ -123,7 +124,39 @@ export default Component.extend(KeyboardShortcuts, {
     if(grid[y][x] == 2){
       grid[y][x] = 0;
       this.incrementProperty('score')
+
+      if(this.levelComplete()){
+        this.incrementProperty('levelNumber');
+        this.restartLevel();
+      }
     }
+  },
+  restartLevel: function(){
+    this.set('x',0);
+    this.set('y',0);
+
+    let grid = this.get('grid');
+    grid.forEach((row, rowIndex)=>{
+      row.forEach((cell, columnIndex)=>{
+        if(cell==0){
+          grid[rowIndex][columnIndex] = 2;
+        }
+      })
+    })
+  },
+  levelComplete: function(){
+    let hasPelletsLeft = false;
+    let grid = this.get('grid');
+
+    grid.forEach((row)=>{
+        row.forEach((cell)=>{
+          if(cell==2){
+            hasPelletsLeft = true;
+          }
+        })
+    });
+
+    return !hasPelletsLeft;
   },
   keyboardShortcuts: {
     up: function () {

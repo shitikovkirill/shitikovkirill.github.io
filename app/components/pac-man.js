@@ -43,12 +43,33 @@ export default Component.extend(KeyboardShortcuts, {
   }),
   didInsertElement: function () {
     this.drawGrid();
-    this.drawCircle();
+    this.drawPac();
   },
-  drawCircle: function () {
-    let ctx = this.get('ctx');
+  drawPac(){
     let x = this.get('x');
     let y = this.get('y');
+    let radiusDivisor = 2;
+    this.drawCircle(x, y, radiusDivisor);
+  },
+  drawPallet(x, y) {
+    let radiusDivisor = 6;
+    this.drawCircle(x, y, radiusDivisor);
+  },
+  drawWalls(x, y) {
+    let squareSize = this.get('squareSize');
+    let ctx = this.get('ctx');
+    ctx.fillStyle = '#000';
+
+    ctx.fillRect(
+      x * squareSize,
+      y * squareSize,
+      squareSize,
+      squareSize
+    );
+  },
+  drawCircle: function (x, y, radiusDivisor) {
+    let ctx = this.get('ctx');
+
     let squareSize = this.get('squareSize');
 
     let pixelX = (x + 1 / 2) * squareSize;
@@ -56,7 +77,7 @@ export default Component.extend(KeyboardShortcuts, {
 
     ctx.fillStyle = '#000';
     ctx.beginPath();
-    ctx.arc(pixelX, pixelY, squareSize / 2, 0, Math.PI * 2, false);
+    ctx.arc(pixelX, pixelY, squareSize / radiusDivisor, 0, Math.PI * 2, false);
     ctx.closePath();
     ctx.fill();
   },
@@ -74,35 +95,12 @@ export default Component.extend(KeyboardShortcuts, {
       );
     })
   },
-  drawWalls(x, y) {
-    let squareSize = this.get('squareSize');
-    let ctx = this.get('ctx');
-    ctx.fillStyle = '#000';
 
-    ctx.fillRect(
-      x * squareSize,
-      y * squareSize,
-      squareSize,
-      squareSize
-    );
-  },
-  drawPallet(x, y) {
-    let squareSize = this.get('squareSize');
-    let ctx = this.get('ctx');
-    ctx.fillStyle = '#000';
-
-    let pixelX = (x + 1 / 2) * squareSize;
-    let pixelY = (y + 1 / 2) * squareSize;
-
-    ctx.beginPath();
-    ctx.arc(pixelX, pixelY, squareSize / 6, 0, Math.PI * 2, false);
-    ctx.closePath();
-    ctx.fill();
-  },
   clearScreen: function () {
     let ctx = this.get('ctx');
     ctx.clearRect(0, 0, this.get('screenPixelWidth'), this.get('screenPixelHeight'));
   },
+
   movePacMan: function (direction, amount) {
     this.incrementProperty(direction, amount);
 
@@ -111,7 +109,7 @@ export default Component.extend(KeyboardShortcuts, {
     }
 
     this.clearScreen();
-    this.drawCircle();
+    this.drawPac();
     this.drawGrid();
   },
   keyboardShortcuts: {

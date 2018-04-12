@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import Ember from 'ember';
 import {computed} from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component'
 
 export default Component.extend(KeyboardShortcuts, {
@@ -103,18 +104,30 @@ export default Component.extend(KeyboardShortcuts, {
     ctx.clearRect(0, 0, this.get('screenPixelWidth'), this.get('screenPixelHeight'));
   },
 
-  movePacMan: function (direction, amount) {
-    this.incrementProperty(direction, amount);
+  movePacMan: function (direction) {
+    if(!this.pathBlockedInDirection(direction)){
+      this.set('x', this.nextCoordinate('x', direction));
+      this.set('y', this.nextCoordinate('y', direction));
 
-    if(this.collidedWithBorder() || this.collidedWithWall()){
-      this.decrementProperty(direction, amount);
+      this.processAnyPellets();
     }
-
-    this.processAnyPellets();
 
     this.clearScreen();
     this.drawPac();
     this.drawGrid();
+  },
+  nextCoordinate(coordinate, direction){
+    return this.get(coordinate) + this.get(`direction.${direction}.${coordinate}`);
+  },
+  pathBlockedInDirection(direction){
+    let cellTypeInDirection = this.cellTypeInDirection(direction);
+    return isEmpty(cellTypeInDirection) || cellTypeInDirection === 1;
+  },
+  cellTypeInDirection(direction){
+    let nextY = this.nextCoordinate('y', direction);
+    let nextX = this.nextCoordinate('x', direction);
+
+    return this.get(`grid.${nextY}.${nextX}`);
   },
   processAnyPellets(){
     let x = this.get('x');
@@ -158,22 +171,29 @@ export default Component.extend(KeyboardShortcuts, {
 
     return !hasPelletsLeft;
   },
+  direction: {
+    up:   {x: 0, y:-1},
+    down: {x: 0, y: 1},
+    left: {x:-1, y: 0},
+    right:{x: 1, y: 0},
+    stopped: {x: 0, y: 0}
+  },
   keyboardShortcuts: {
     up: function () {
       Ember.Logger.log('up');
-      this.movePacMan('y', -1);
+      this.movePacMan('up');
     },
     down: function () {
       Ember.Logger.log('down');
-      this.movePacMan('y', 1);
+      this.movePacMan('down');
     },
     left: function () {
       Ember.Logger.log('left');
-      this.movePacMan('x', -1);
+      this.movePacMan('left');
     },
     right: function () {
       Ember.Logger.log('right');
-      this.movePacMan('x', 1);
+      this.movePacMan('right');
     }
   },
   collidedWithBorder: function(){

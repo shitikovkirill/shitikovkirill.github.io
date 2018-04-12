@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import Ember from 'ember';
 import {computed} from '@ember/object';
 import { isEmpty } from '@ember/utils';
+import { later } from '@ember/runloop';
 import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component'
 
 export default Component.extend(KeyboardShortcuts, {
@@ -60,12 +61,12 @@ export default Component.extend(KeyboardShortcuts, {
     let x = this.get('x');
     let y = this.get('y');
     let radiusDivisor = 2;
-    this.drawCircle(x, y, radiusDivisor);
+    this.drawCircle(x, y, radiusDivisor, this.get('direction'));
   },
 
   drawPallet(x, y) {
     let radiusDivisor = 6;
-    this.drawCircle(x, y, radiusDivisor);
+    this.drawCircle(x, y, radiusDivisor, 'stopped');
   },
 
   drawWalls(x, y) {
@@ -81,19 +82,24 @@ export default Component.extend(KeyboardShortcuts, {
     );
   },
 
-  drawCircle: function (x, y, radiusDivisor) {
+  drawCircle: function (x, y, radiusDivisor, direction) {
     let ctx = this.get('ctx');
 
     let squareSize = this.get('squareSize');
 
-    let pixelX = (x + 1 / 2) * squareSize;
-    let pixelY = (y + 1 / 2) * squareSize;
+    let pixelX = (x + 1 / 2 + this.offsetFor('x', direction)) * squareSize;
+    let pixelY = (y + 1 / 2 + this.offsetFor('y', direction)) * squareSize;
 
     ctx.fillStyle = '#000';
     ctx.beginPath();
     ctx.arc(pixelX, pixelY, squareSize / radiusDivisor, 0, Math.PI * 2, false);
     ctx.closePath();
     ctx.fill();
+  },
+
+  offsetFor(coordinate, direction){
+    let frameRatio = this.get('frameCycle') / this.get('framesPerMovement');
+    return this.get(`directions.${direction}.${coordinate}`) * frameRatio;
   },
 
   drawGrid: function(){
@@ -143,7 +149,7 @@ export default Component.extend(KeyboardShortcuts, {
       this.processAnyPellets();
     } else {
       this.incrementProperty('frameCycle');
-      Ember.run.later(this, this.movementLoop, 1000/60);
+      later(this, this.movementLoop, 1000/60);
     }
 
     this.clearScreen();

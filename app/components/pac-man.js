@@ -27,6 +27,13 @@ export default Component.extend(KeyboardShortcuts, {
     [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
     [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
   ],
+  directions: {
+    up:   {x: 0, y:-1},
+    down: {x: 0, y: 1},
+    left: {x:-1, y: 0},
+    right:{x: 1, y: 0},
+    stopped: {x: 0, y: 0}
+  },
   ctx: computed(function () {
     let canvas = document.getElementById("myCanvas");
     let ctx = canvas.getContext("2d");
@@ -44,6 +51,7 @@ export default Component.extend(KeyboardShortcuts, {
   screenPixelHeight: computed(function () {
     return this.get('screenHeight') * this.get('squareSize');
   }),
+
   didInsertElement: function () {
     this.drawGrid();
     this.drawPac();
@@ -54,10 +62,12 @@ export default Component.extend(KeyboardShortcuts, {
     let radiusDivisor = 2;
     this.drawCircle(x, y, radiusDivisor);
   },
+
   drawPallet(x, y) {
     let radiusDivisor = 6;
     this.drawCircle(x, y, radiusDivisor);
   },
+
   drawWalls(x, y) {
     let squareSize = this.get('squareSize');
     let ctx = this.get('ctx');
@@ -70,6 +80,7 @@ export default Component.extend(KeyboardShortcuts, {
       squareSize
     );
   },
+
   drawCircle: function (x, y, radiusDivisor) {
     let ctx = this.get('ctx');
 
@@ -84,6 +95,7 @@ export default Component.extend(KeyboardShortcuts, {
     ctx.closePath();
     ctx.fill();
   },
+
   drawGrid: function(){
     let grid = this.get('grid');
     grid.forEach((row, rowIndex) => {
@@ -104,31 +116,58 @@ export default Component.extend(KeyboardShortcuts, {
     ctx.clearRect(0, 0, this.get('screenPixelWidth'), this.get('screenPixelHeight'));
   },
 
+  isMoving: false,
+  direction: 'stopped',
   movePacMan: function (direction) {
-    if(!this.pathBlockedInDirection(direction)){
+    let inputBlocked = this.get('isMoving') || this.pathBlockedInDirection(direction);
+    Ember.Logger.info(`inputBlocked: ${inputBlocked}`);
+    if(!inputBlocked){
+      this.set('direction', direction);
+      this.set('isMoving', true);
+      this.movementLoop();
+    }
+  },
+
+  frameCycle: 1,
+  framesPerMovement: 30,
+
+  movementLoop(){
+    if(this.get('frameCycle') == this.get('framesPerMovement')){
+      let direction = this.get('direction');
       this.set('x', this.nextCoordinate('x', direction));
       this.set('y', this.nextCoordinate('y', direction));
 
+      this.set('isMoving', false);
+      this.set('frameCycle', 1);
+
       this.processAnyPellets();
+    } else {
+      this.incrementProperty('frameCycle');
+      Ember.run.later(this, this.movementLoop, 1000/60);
     }
 
     this.clearScreen();
-    this.drawPac();
     this.drawGrid();
+    this.drawPac();
   },
+
   nextCoordinate(coordinate, direction){
-    return this.get(coordinate) + this.get(`direction.${direction}.${coordinate}`);
+    return this.get(coordinate) + this.get(`directions.${direction}.${coordinate}`);
   },
+
   pathBlockedInDirection(direction){
     let cellTypeInDirection = this.cellTypeInDirection(direction);
+    Ember.Logger.info(`cellTypeInDirection: ${cellTypeInDirection}`);
     return isEmpty(cellTypeInDirection) || cellTypeInDirection === 1;
   },
+
   cellTypeInDirection(direction){
     let nextY = this.nextCoordinate('y', direction);
     let nextX = this.nextCoordinate('x', direction);
 
     return this.get(`grid.${nextY}.${nextX}`);
   },
+
   processAnyPellets(){
     let x = this.get('x');
     let y = this.get('y');
@@ -144,6 +183,7 @@ export default Component.extend(KeyboardShortcuts, {
       }
     }
   },
+
   restartLevel: function(){
     this.set('x',0);
     this.set('y',0);
@@ -157,6 +197,7 @@ export default Component.extend(KeyboardShortcuts, {
       })
     })
   },
+
   levelComplete: function(){
     let hasPelletsLeft = false;
     let grid = this.get('grid');
@@ -171,13 +212,7 @@ export default Component.extend(KeyboardShortcuts, {
 
     return !hasPelletsLeft;
   },
-  direction: {
-    up:   {x: 0, y:-1},
-    down: {x: 0, y: 1},
-    left: {x:-1, y: 0},
-    right:{x: 1, y: 0},
-    stopped: {x: 0, y: 0}
-  },
+
   keyboardShortcuts: {
     up: function () {
       Ember.Logger.log('up');
@@ -196,6 +231,7 @@ export default Component.extend(KeyboardShortcuts, {
       this.movePacMan('right');
     }
   },
+
   collidedWithBorder: function(){
     let x = this.get('x');
     let y = this.get('y');
@@ -206,6 +242,7 @@ export default Component.extend(KeyboardShortcuts, {
 
     return pacOutOfBounds;
   },
+
   collidedWithWall: function () {
     let x = this.get('x');
     let y = this.get('y');

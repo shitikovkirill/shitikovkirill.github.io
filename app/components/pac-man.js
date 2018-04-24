@@ -35,6 +35,9 @@ export default Component.extend(KeyboardShortcuts, {
     right:{x: 1, y: 0},
     stopped: {x: 0, y: 0}
   },
+  isMoving: false,
+  direction: 'down',
+  intent: 'down',
   ctx: computed(function () {
     let canvas = document.getElementById("myCanvas");
     let ctx = canvas.getContext("2d");
@@ -53,10 +56,10 @@ export default Component.extend(KeyboardShortcuts, {
     return this.get('screenHeight') * this.get('squareSize');
   }),
 
-  didInsertElement: function () {
-    this.drawGrid();
-    this.drawPac();
+  didInsertElement(){
+    this.movementLoop();
   },
+
   drawPac(){
     let x = this.get('x');
     let y = this.get('y');
@@ -64,12 +67,12 @@ export default Component.extend(KeyboardShortcuts, {
     this.drawCircle(x, y, radiusDivisor, this.get('direction'));
   },
 
-  drawPallet(x, y) {
+  drawPallet(x, y){
     let radiusDivisor = 6;
     this.drawCircle(x, y, radiusDivisor, 'stopped');
   },
 
-  drawWalls(x, y) {
+  drawWalls(x, y){
     let squareSize = this.get('squareSize');
     let ctx = this.get('ctx');
     ctx.fillStyle = '#000';
@@ -82,7 +85,7 @@ export default Component.extend(KeyboardShortcuts, {
     );
   },
 
-  drawCircle: function (x, y, radiusDivisor, direction) {
+  drawCircle(x, y, radiusDivisor, direction){
     let ctx = this.get('ctx');
 
     let squareSize = this.get('squareSize');
@@ -102,7 +105,7 @@ export default Component.extend(KeyboardShortcuts, {
     return this.get(`directions.${direction}.${coordinate}`) * frameRatio;
   },
 
-  drawGrid: function(){
+  drawGrid(){
     let grid = this.get('grid');
     grid.forEach((row, rowIndex) => {
       row.forEach((cell, columnIndex) => {
@@ -117,14 +120,12 @@ export default Component.extend(KeyboardShortcuts, {
     })
   },
 
-  clearScreen: function () {
+  clearScreen(){
     let ctx = this.get('ctx');
     ctx.clearRect(0, 0, this.get('screenPixelWidth'), this.get('screenPixelHeight'));
   },
 
-  isMoving: false,
-  direction: 'stopped',
-  movePacMan: function (direction) {
+  movePacMan(direction){
     let inputBlocked = this.get('isMoving') || this.pathBlockedInDirection(direction);
     Ember.Logger.info(`inputBlocked: ${inputBlocked}`);
     if(!inputBlocked){
@@ -179,7 +180,7 @@ export default Component.extend(KeyboardShortcuts, {
     let y = this.get('y');
     let grid = this.get('grid');
 
-    if(grid[y][x] == 2){
+    if(grid[y][x] === 2){
       grid[y][x] = 0;
       this.incrementProperty('score')
 
@@ -190,27 +191,27 @@ export default Component.extend(KeyboardShortcuts, {
     }
   },
 
-  restartLevel: function(){
+  restartLevel(){
     this.set('x',0);
     this.set('y',0);
 
     let grid = this.get('grid');
     grid.forEach((row, rowIndex)=>{
       row.forEach((cell, columnIndex)=>{
-        if(cell==0){
+        if(cell===0){
           grid[rowIndex][columnIndex] = 2;
         }
       })
     })
   },
 
-  levelComplete: function(){
+  levelComplete(){
     let hasPelletsLeft = false;
     let grid = this.get('grid');
 
     grid.forEach((row)=>{
         row.forEach((cell)=>{
-          if(cell==2){
+          if(cell===2){
             hasPelletsLeft = true;
           }
         })
@@ -220,25 +221,13 @@ export default Component.extend(KeyboardShortcuts, {
   },
 
   keyboardShortcuts: {
-    up: function () {
-      Ember.Logger.log('up');
-      this.movePacMan('up');
-    },
-    down: function () {
-      Ember.Logger.log('down');
-      this.movePacMan('down');
-    },
-    left: function () {
-      Ember.Logger.log('left');
-      this.movePacMan('left');
-    },
-    right: function () {
-      Ember.Logger.log('right');
-      this.movePacMan('right');
-    }
+    up()    { this.set('intent', 'up') },
+    down()  { this.set('intent', 'down') },
+    left()  { this.set('intent', 'left') },
+    right() { this.set('intent', 'right') }
   },
 
-  collidedWithBorder: function(){
+  collidedWithBorder(){
     let x = this.get('x');
     let y = this.get('y');
     let screenHeight = this.get('screenHeight');
@@ -249,11 +238,11 @@ export default Component.extend(KeyboardShortcuts, {
     return pacOutOfBounds;
   },
 
-  collidedWithWall: function () {
+  collidedWithWall(){
     let x = this.get('x');
     let y = this.get('y');
     let grid = this.get('grid');
 
-    return grid[y][x] == 1
+    return grid[y][x] === 1;
   }
 });

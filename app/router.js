@@ -7,6 +7,8 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
+  this.route('reddit', {path: 'reddit/:subreddit'});
+  this.route('pacman');
 });
 
 export default Router;

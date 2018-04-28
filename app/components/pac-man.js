@@ -125,13 +125,13 @@ export default Component.extend(KeyboardShortcuts, {
     ctx.clearRect(0, 0, this.get('screenPixelWidth'), this.get('screenPixelHeight'));
   },
 
-  movePacMan(direction){
-    let inputBlocked = this.get('isMoving') || this.pathBlockedInDirection(direction);
-    Ember.Logger.info(`inputBlocked: ${inputBlocked}`);
-    if(!inputBlocked){
-      this.set('direction', direction);
-      this.set('isMoving', true);
-      this.movementLoop();
+  changePacDirection(){
+    let intent = this.get('intent');
+    Ember.Logger.info(`changePacDirection: ${intent}`);
+    if(this.pathBlockedInDirection(intent)){
+      this.set('direction', 'stopped');
+    } else {
+      this.set('direction', intent);
     }
   },
 
@@ -139,23 +139,26 @@ export default Component.extend(KeyboardShortcuts, {
   framesPerMovement: 30,
 
   movementLoop(){
+    Ember.Logger.info('movementLoop');
     if(this.get('frameCycle') == this.get('framesPerMovement')){
       let direction = this.get('direction');
       this.set('x', this.nextCoordinate('x', direction));
       this.set('y', this.nextCoordinate('y', direction));
 
-      this.set('isMoving', false);
       this.set('frameCycle', 1);
 
       this.processAnyPellets();
+      this.changePacDirection();
+    } else if(this.get('direction')==='stopped') {
+      this.changePacDirection();
     } else {
       this.incrementProperty('frameCycle');
-      later(this, this.movementLoop, 1000/60);
     }
 
     this.clearScreen();
     this.drawGrid();
     this.drawPac();
+    later(this, this.movementLoop, 1000/60);
   },
 
   nextCoordinate(coordinate, direction){
@@ -221,10 +224,22 @@ export default Component.extend(KeyboardShortcuts, {
   },
 
   keyboardShortcuts: {
-    up()    { this.set('intent', 'up') },
-    down()  { this.set('intent', 'down') },
-    left()  { this.set('intent', 'left') },
-    right() { this.set('intent', 'right') }
+    up()    {
+      Ember.Logger.log('up');
+      this.set('intent', 'up');
+    },
+    down()  {
+      Ember.Logger.log('down');
+      this.set('intent', 'down');
+    },
+    left()  {
+      Ember.Logger.log('left');
+      this.set('intent', 'left');
+    },
+    right() {
+      Ember.Logger.log('right');
+      this.set('intent', 'right')
+    }
   },
 
   collidedWithBorder(){

@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import SharedStuff from '../mixins/shared-stuff';
 import { isEmpty } from '@ember/utils';
+import Object from '@ember/object';
 
-export default Ember.Object.extend(SharedStuff, {
+export default Object.extend(SharedStuff, {
   direction: 'down',
   intent: 'down',
 

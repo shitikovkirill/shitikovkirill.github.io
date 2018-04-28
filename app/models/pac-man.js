@@ -42,4 +42,27 @@ export default Object.extend(SharedStuff, {
   nextCoordinate(coordinate, direction){
     return this.get(coordinate) + this.get(`directions.${direction}.${coordinate}`);
   },
+
+  move(){
+    if(this.animationCompleted()){
+      this.finalizeMove();
+      this.changeDirection();
+    } else if(this.get('direction')==='stopped'){
+      this.changeDirection();
+    } else {
+      this.incrementProperty('frameCycle');
+    }
+  },
+
+  animationCompleted(){
+    return this.get('frameCycle') === this.get('framesPerMovement');
+  },
+
+  finalizeMove(){
+    let direction = this.get('direction');
+    this.set('x', this.nextCoordinate('x', direction));
+    this.set('y', this.nextCoordinate('y', direction));
+
+    this.set('frameCycle', 1);
+  }
 })

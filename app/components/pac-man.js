@@ -10,7 +10,7 @@ export default Component.extend(KeyboardShortcuts, SharedStuff, {
   didInsertElement(){
     let pac = Pac.create();
     this.set('pac', pac);
-    this.movementLoop();
+    this.loop();
   },
 
   score: 0,
@@ -68,27 +68,17 @@ export default Component.extend(KeyboardShortcuts, SharedStuff, {
     ctx.clearRect(0, 0, this.get('screenPixelWidth'), this.get('screenPixelHeight'));
   },
 
-  movementLoop(){
-    Ember.Logger.info('movementLoop');
-    if(this.get('pac.frameCycle') == this.get('pac.framesPerMovement')){
-      let direction = this.get('pac.direction');
-      this.set('pac.x', this.get('pac').nextCoordinate('x', direction));
-      this.set('pac.y', this.get('pac').nextCoordinate('y', direction));
+  loop(){
+    Ember.Logger.info('loop');
+    this.get('pac').move();
 
-      this.set('pac.frameCycle', 1);
-
-      this.processAnyPellets();
-      this.get('pac').changeDirection();
-    } else if(this.get('pac.direction')==='stopped') {
-      this.get('pac').changeDirection();
-    } else {
-      this.incrementProperty('pac.frameCycle');
-    }
+    this.processAnyPellets();
 
     this.clearScreen();
     this.drawGrid();
     this.get('pac').draw();
-    later(this, this.movementLoop, 1000/60);
+
+    later(this, this.loop, 1000/60);
   },
 
 

@@ -1,15 +1,14 @@
 import Component from '@ember/component';
 import Ember from 'ember';
 import {computed} from '@ember/object';
-import { isEmpty } from '@ember/utils';
 import { later } from '@ember/runloop';
-import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component'
+import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component';
+import Pac from '../models/pac-man';
+import SharedStuff from '../mixins/shared-stuff';
 
-export default Component.extend(KeyboardShortcuts, {
+export default Component.extend(KeyboardShortcuts, SharedStuff, {
   score: 0,
   levelNumber: 1,
-  x: 1,
-  y: 2,
   squareSize: 40,
   grid: [
     [2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
@@ -36,8 +35,6 @@ export default Component.extend(KeyboardShortcuts, {
     stopped: {x: 0, y: 0}
   },
   isMoving: false,
-  direction: 'down',
-  intent: 'down',
   ctx: computed(function () {
     let canvas = document.getElementById("myCanvas");
     let ctx = canvas.getContext("2d");
@@ -58,13 +55,6 @@ export default Component.extend(KeyboardShortcuts, {
 
   didInsertElement(){
     this.movementLoop();
-  },
-
-  drawPac(){
-    let x = this.get('x');
-    let y = this.get('y');
-    let radiusDivisor = 2;
-    this.drawCircle(x, y, radiusDivisor, this.get('direction'));
   },
 
   drawPallet(x, y){
@@ -125,16 +115,6 @@ export default Component.extend(KeyboardShortcuts, {
     ctx.clearRect(0, 0, this.get('screenPixelWidth'), this.get('screenPixelHeight'));
   },
 
-  changePacDirection(){
-    let intent = this.get('intent');
-    Ember.Logger.info(`changePacDirection: ${intent}`);
-    if(this.pathBlockedInDirection(intent)){
-      this.set('direction', 'stopped');
-    } else {
-      this.set('direction', intent);
-    }
-  },
-
   frameCycle: 1,
   framesPerMovement: 30,
 
@@ -148,35 +128,19 @@ export default Component.extend(KeyboardShortcuts, {
       this.set('frameCycle', 1);
 
       this.processAnyPellets();
-      this.changePacDirection();
+      Pac.changeDirection();
     } else if(this.get('direction')==='stopped') {
-      this.changePacDirection();
+      Pac.changeDirection();
     } else {
       this.incrementProperty('frameCycle');
     }
 
     this.clearScreen();
     this.drawGrid();
-    this.drawPac();
+    Pac.draw();
     later(this, this.movementLoop, 1000/60);
   },
 
-  nextCoordinate(coordinate, direction){
-    return this.get(coordinate) + this.get(`directions.${direction}.${coordinate}`);
-  },
-
-  pathBlockedInDirection(direction){
-    let cellTypeInDirection = this.cellTypeInDirection(direction);
-    Ember.Logger.info(`cellTypeInDirection: ${cellTypeInDirection}`);
-    return isEmpty(cellTypeInDirection) || cellTypeInDirection === 1;
-  },
-
-  cellTypeInDirection(direction){
-    let nextY = this.nextCoordinate('y', direction);
-    let nextX = this.nextCoordinate('x', direction);
-
-    return this.get(`grid.${nextY}.${nextX}`);
-  },
 
   processAnyPellets(){
     let x = this.get('x');

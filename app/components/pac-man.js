@@ -1,71 +1,27 @@
 import Component from '@ember/component';
 import Ember from 'ember';
-import {computed} from '@ember/object';
 import { later } from '@ember/runloop';
 import KeyboardShortcuts from 'ember-keyboard-shortcuts/mixins/component';
 import Pac from '../models/pac-man';
+import Level from '../models/level';
 import SharedStuff from '../mixins/shared-stuff';
 
 export default Component.extend(KeyboardShortcuts, SharedStuff, {
-  didInsertElement(){
-    let pac = Pac.create();
-    this.set('pac', pac);
-    this.loop();
-  },
-
   score: 0,
   levelNumber: 1,
   isMoving: false,
 
-  screenWidth: computed(function () {
-    return this.get('grid.firstObject.length');
-  }),
-  screenHeight: computed(function () {
-    return this.get('grid.length');
-  }),
-  screenPixelWidth: computed(function () {
-    return this.get('screenWidth') * this.get('squareSize');
-  }),
-  screenPixelHeight: computed(function () {
-    return this.get('screenHeight') * this.get('squareSize');
-  }),
+  didInsertElement(){
+    let level = Level.create();
+    this.set('level', level);
 
-  drawWalls(x, y){
-    let squareSize = this.get('squareSize');
-    let ctx = this.get('ctx');
-    ctx.fillStyle = '#000';
-
-    ctx.fillRect(
-      x * squareSize,
-      y * squareSize,
-      squareSize,
-      squareSize
-    );
-  },
-
-  drawGrid(){
-    let grid = this.get('grid');
-    grid.forEach((row, rowIndex) => {
-      row.forEach((cell, columnIndex) => {
-          if(cell === 1){
-            this.drawWalls(columnIndex, rowIndex);
-          }
-          if(cell === 2){
-            this.drawPallet(columnIndex, rowIndex);
-          }
-        }
-      );
-    })
-  },
-
-  drawPallet(x, y){
-    let radiusDivisor = 6;
-    this.drawCircle(x, y, radiusDivisor, 'stopped');
-  },
-
-  clearScreen(){
-    let ctx = this.get('ctx');
-    ctx.clearRect(0, 0, this.get('screenPixelWidth'), this.get('screenPixelHeight'));
+    let pac = Pac.create({
+      level: level,
+      x: level.get('startingPac.x'),
+      y: level.get('startingPac.y'),
+    });
+    this.set('pac', pac);
+    this.loop();
   },
 
   loop(){
@@ -81,50 +37,63 @@ export default Component.extend(KeyboardShortcuts, SharedStuff, {
     later(this, this.loop, 1000/60);
   },
 
+  drawGrid(){
+    let grid = this.get('level.grid');
+    grid.forEach((row, rowIndex) => {
+      row.forEach((cell, columnIndex) => {
+          if(cell === 1){
+            this.drawWalls(columnIndex, rowIndex);
+          }
+          if(cell === 2){
+            this.drawPallet(columnIndex, rowIndex);
+          }
+        }
+      );
+    })
+  },
+
+  drawWalls(x, y){
+    let squareSize = this.get('level.squareSize');
+    let ctx = this.get('ctx');
+    ctx.fillStyle = '#000';
+
+    ctx.fillRect(
+      x * squareSize,
+      y * squareSize,
+      squareSize,
+      squareSize
+    );
+  },
+
+  drawPallet(x, y){
+    let radiusDivisor = 6;
+    this.drawCircle(x, y, radiusDivisor, 'stopped');
+  },
+
+  clearScreen(){
+    let ctx = this.get('ctx');
+    ctx.clearRect(0, 0, this.get('level.pixelWidth'), this.get('level.pixelHeight'));
+  },
 
   processAnyPellets(){
     let x = this.get('pac.x');
     let y = this.get('pac.y');
-    let grid = this.get('grid');
+    let grid = this.get('level.grid');
 
     if(grid[y][x] === 2){
       grid[y][x] = 0;
       this.incrementProperty('score');
 
-      if(this.levelComplete()){
+      if(this.get('level').isComplete()){
         this.incrementProperty('levelNumber');
-        this.restartLevel();
+        this.restart();
       }
     }
   },
 
-  restartLevel(){
-    this.set('pac.x',0);
-    this.set('pac.y',0);
-
-    let grid = this.get('grid');
-    grid.forEach((row, rowIndex)=>{
-      row.forEach((cell, columnIndex)=>{
-        if(cell===0){
-          grid[rowIndex][columnIndex] = 2;
-        }
-      })
-    })
-  },
-
-  levelComplete(){
-    let hasPelletsLeft = false;
-    let grid = this.get('grid');
-
-    grid.forEach((row)=>{
-        row.forEach((cell)=>{
-          if(cell===2){
-            hasPelletsLeft = true;
-          }
-        })
-    });
-
-    return !hasPelletsLeft;
+  restart(){
+    this.get('pac').restart();
+    this.get('level').restart();
   },
 
   keyboardShortcuts: {
@@ -160,7 +129,7 @@ export default Component.extend(KeyboardShortcuts, SharedStuff, {
   collidedWithWall(){
     let x = this.get('pac.x');
     let y = this.get('pac.y');
-    let grid = this.get('pac.grid');
+    let grid = this.get('level.grid');
 
     return grid[y][x] === 1;
   }

@@ -7,8 +7,8 @@ export default Object.extend(SharedStuff, {
   direction: 'down',
   intent: 'down',
 
-  x: 1,
-  y: 2,
+  x: null,
+  y: null,
 
   draw(){
     let x = this.get('x');
@@ -36,7 +36,7 @@ export default Object.extend(SharedStuff, {
     let nextY = this.nextCoordinate('y', direction);
     let nextX = this.nextCoordinate('x', direction);
 
-    return this.get(`grid.${nextY}.${nextX}`);
+    return this.get(`level.grid.${nextY}.${nextX}`);
   },
 
   nextCoordinate(coordinate, direction){
@@ -64,5 +64,12 @@ export default Object.extend(SharedStuff, {
     this.set('y', this.nextCoordinate('y', direction));
 
     this.set('frameCycle', 1);
-  }
+  },
+
+  restart(){
+    this.set('x', this.get('level.startingPac.x'));
+    this.set('y', this.get('level.startingPac.y'));
+    this.set('frameCycle', 0);
+    this.set('direction', 'stopped');
+  },
 })

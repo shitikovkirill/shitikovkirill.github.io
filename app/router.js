@@ -12,6 +12,9 @@ Router.map(function() {
 
   this.route('modules', function() {
     this.route('ember-power-select');
+    this.route('ember-cli-mirage', function() {
+      this.route('authors');
+    });
   });
 });
 

@@ -9,6 +9,10 @@ const Router = EmberRouter.extend({
 Router.map(function() {
   this.route('reddit', {path: 'reddit/:subreddit'});
   this.route('pacman');
+
+  this.route('modules', function() {
+    this.route('ember-power-select');
+  });
 });
 
 export default Router;

@@ -12,6 +12,10 @@ export default Factory.extend({
 
   avatar() {
     return faker.internet.avatar();
+  },
+
+  afterCreate(author, server) {
+    server.create('blog-post', { author });
   }
 
 });

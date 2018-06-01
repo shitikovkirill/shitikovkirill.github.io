@@ -15,4 +15,6 @@ export default function() {
   this.get('/authors/:id', (schema, request) => {
     return schema.authors.find(request.params.id);
   });
+
+  this.passthrough();
 }

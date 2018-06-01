@@ -1,1 +1,14 @@
-{{outlet}}
+{{#each model as |author|}}
+  <div>
+    <hr>
+    {{author.id}} {{author.name}} <br>
+    {{author.age}} <br>
+    {{author.admin}} <br>
+    <img src="{{author.avatar}}"> <br>
+    <div>
+      {{#each author.blogPosts as |post|}}
+        {{ post.name}}
+      {{/each}}
+    </div>
+  </div>
+{{/each}}

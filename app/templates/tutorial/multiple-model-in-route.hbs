@@ -1,0 +1,13 @@
+<h3>Members - City </h3>
+<ul>
+  {{#each model.rentals as |rental|}}
+    <li>{{rental.owner}} - {{rental.city}}</li>
+  {{/each}}
+</ul>
+
+<h3>Member Reviews </h3>
+<ul>
+  {{#each model.reviews as |review|}}
+    <li>{{review.rating}} - {{review.content}} - by {{review.author}}</li>
+  {{/each}}
+</ul>

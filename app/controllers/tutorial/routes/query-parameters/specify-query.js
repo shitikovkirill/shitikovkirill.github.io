@@ -14,7 +14,6 @@ export default Controller.extend ({
 
       //setting up the query parameters and displaying it
       this.set('query', this.get('queryParam'));
-      document.write(this.get('query'));
     }
   }
 });

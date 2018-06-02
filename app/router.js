@@ -34,6 +34,9 @@ Router.map(function () {
       });
       this.route('will-transition');
       this.route('loading-page');
+      this.route('query-parameters', function () {
+        this.route('specify-query');
+      })
     });
   });
 

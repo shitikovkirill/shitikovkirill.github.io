@@ -38,6 +38,7 @@ Router.map(function () {
         this.route('specify-query');
         this.route('replace-state');
         this.route('query-param-key');
+        this.route('default-values');
 
       })
     });

@@ -1,0 +1,8 @@
+<h2>My Page</h2>
+{{link-to 'Show' (query-params showThing=true)}}
+{{link-to 'Hide' (query-params showThing=false)}}
+<br>
+{{#if showThing}}
+  <b>Welcome to Tutorialspoint..</b>
+{{/if}}
+{{outlet}}

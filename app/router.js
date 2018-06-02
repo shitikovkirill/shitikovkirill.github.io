@@ -39,7 +39,7 @@ Router.map(function () {
         this.route('replace-state');
         this.route('query-param-key');
         this.route('default-values');
-
+        this.route('sticky-query-param');
       })
     });
   });

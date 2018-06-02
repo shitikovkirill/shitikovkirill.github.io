@@ -16,5 +16,13 @@ export default function() {
     return schema.authors.find(request.params.id);
   });
 
+  this.get('/rentals', (schema, request) => {
+    return schema.rentals.all();
+  });
+
+  this.get('/reviews', (schema, request) => {
+    return schema.reviews.all();
+  });
+
   this.passthrough('https://www.reddit.com/**');
 }

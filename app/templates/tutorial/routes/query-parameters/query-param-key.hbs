@@ -1,0 +1,11 @@
+<form {{action "addQuery" on = "submit"}}>
+  {{input value = queryParam}}
+  <input type = "submit" value = "Send Value"/>
+</form>
+
+
+{{#if query}}
+  {{query}} <br>
+  See in url parameter name
+{{/if}}
+{{outlet}}

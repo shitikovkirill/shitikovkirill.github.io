@@ -6,7 +6,7 @@ const Router = EmberRouter.extend({
   rootURL: config.rootURL
 });
 
-Router.map(function() {
+Router.map(function () {
   this.route('youtube', function () {
     this.route('reddit', {path: 'reddit/:subreddit'});
   });
@@ -16,12 +16,24 @@ Router.map(function() {
   });
 
   this.route('tutorial', function () {
-    this.route('multiple-model-in-route');
+    this.route('objects', function () {
+      this.route('classes-and-instances');
+      this.route('reopen');
+      this.route('chaining-computed-properties');
+      this.route('setting-computed-properties');
+      this.route('computed-aggregate');
+      this.route('observer-asynchrony');
+      this.route('object-model-bindings');
+
+    });
+    this.route('routes', function () {
+      this.route('multiple-model');
+    });
   });
 
-  this.route('modules', function() {
+  this.route('modules', function () {
     this.route('ember-power-select');
-    this.route('ember-cli-mirage', function() {
+    this.route('ember-cli-mirage', function () {
       this.route('authors');
     });
   });

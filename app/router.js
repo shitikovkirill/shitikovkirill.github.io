@@ -28,6 +28,10 @@ Router.map(function () {
     });
     this.route('routes', function () {
       this.route('multiple-model');
+      this.route('rendering-template');
+      this.route('redirecting', function () {
+        this.route('target');
+      });
     });
   });
 

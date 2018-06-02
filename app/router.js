@@ -32,6 +32,7 @@ Router.map(function () {
       this.route('redirecting', function () {
         this.route('target');
       });
+      this.route('will-transition');
     });
   });
 

@@ -33,6 +33,7 @@ Router.map(function () {
         this.route('target');
       });
       this.route('will-transition');
+      this.route('loading-page');
     });
   });
 

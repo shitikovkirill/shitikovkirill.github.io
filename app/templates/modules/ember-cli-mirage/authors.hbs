@@ -1,14 +1,20 @@
 {{#each model as |author|}}
-  <div>
-    <hr>
-    {{author.id}} {{author.name}} <br>
-    {{author.age}} <br>
-    {{author.admin}} <br>
-    <img src="{{author.avatar}}"> <br>
-    <div>
-      {{#each author.blogPosts as |post|}}
-        {{ post.name}}
-      {{/each}}
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-8">
+        {{author.id}} {{author.name}} <br>
+        {{author.age}} <br>
+        {{author.admin}} <br>
+        <hr>
+        <div>
+          {{#each author.blogPosts as |post|}}
+            {{ post.name}}
+          {{/each}}
+        </div>
+      </div>
+      <div class="4">
+        <img src="{{author.avatar}}"> <br>
+      </div>
     </div>
   </div>
 {{/each}}

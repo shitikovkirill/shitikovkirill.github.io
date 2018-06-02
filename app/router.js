@@ -7,8 +7,13 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  this.route('reddit', {path: 'reddit/:subreddit'});
-  this.route('pacman');
+  this.route('youtube', function () {
+    this.route('reddit', {path: 'reddit/:subreddit'});
+  });
+
+  this.route('book', function () {
+    this.route('pacman');
+  });
 
   this.route('tutorial', function () {
     this.route('multiple-model-in-route');

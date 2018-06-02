@@ -16,5 +16,5 @@ export default function() {
     return schema.authors.find(request.params.id);
   });
 
-  this.passthrough();
+  this.passthrough('https://www.reddit.com/**');
 }

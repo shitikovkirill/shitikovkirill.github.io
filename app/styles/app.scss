@@ -1,0 +1,7 @@
+@import "ember-cli-bootstrap-4/bootstrap";
+@import 'ember-power-select/themes/bootstrap';
+@import 'ember-power-select';
+
+body main.container {
+  padding: 60px 15px 0;
+}

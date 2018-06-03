@@ -1,0 +1,15 @@
+{{#link-to 'tutorial.templates.hbs-links.info' }}Fruits{{/link-to}}<br>
+{{#link-to 'tutorial.templates.hbs-links.record' recoModel }}Some Record{{/link-to}}<br>
+<hr>
+
+{{link-to 'Fruits' 'tutorial.templates.hbs-links.info' }}<br>
+{{link-to 'Some Record' 'tutorial.templates.hbs-links.record' recoModel}}<br>
+<hr>
+
+{{link-to 'Fruits' 'tutorial.templates.hbs-links.info' class = "btn-primary"}}<br>
+{{link-to 'Some Record' 'tutorial.templates.hbs-links.record' recoModel class = "btn-primary"}}<br>
+<hr>
+
+{{#link-to 'tutorial.templates.hbs-links.info' replace = true }}Fruits{{/link-to}}<br>
+{{#link-to 'tutorial.templates.hbs-links.record' recoModel replace = true }}Some Record{{/link-to}}<br>
+<hr>

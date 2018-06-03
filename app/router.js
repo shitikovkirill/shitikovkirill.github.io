@@ -42,6 +42,10 @@ Router.map(function () {
         this.route('sticky-query-param');
       })
     });
+    this.route('templates',function () {
+      this.route('base');
+      this.route('conditionals')
+    })
   });
 
   this.route('modules', function () {

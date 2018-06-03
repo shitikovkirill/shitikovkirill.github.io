@@ -1,0 +1,17 @@
+Enter Name : {{input type = "text" placeholder = "Enter the name" value = name}}
+<button {{action "send"}}>Send</button>
+
+<div>{{ name }}</div>
+
+{{#if isNamed}}
+  <div>Name already sanded</div>
+{{/if}}
+
+<hr>
+
+{{input type = "checkbox" checked = checkMe}} Check Box
+<button {{action "send2"}}>Click the checkbox</button>
+
+{{log 'checkMe is:' checkMe}}
+
+<div>{{ checkMe }}</div>

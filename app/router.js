@@ -51,7 +51,8 @@ Router.map(function () {
         this.route('info');
         this.route('record', { path: 'records/:records_id' });
       });
-      this.route('hbs-actions')
+      this.route('hbs-actions');
+      this.route('hbs-input')
     });
   });
 

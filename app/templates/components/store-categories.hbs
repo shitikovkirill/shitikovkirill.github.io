@@ -1,0 +1,11 @@
+<ul>
+  {{#each-in typesOfvehicles as |category products|}}
+    <li>{{category}}
+      <ol>
+        {{#each products as |product|}}
+          <li>{{product}}</li>
+        {{/each}}
+      </ol>
+    </li>
+  {{/each-in}}
+</ul>

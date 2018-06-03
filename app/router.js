@@ -46,6 +46,7 @@ Router.map(function () {
       this.route('base');
       this.route('conditionals');
       this.route('list');
+      this.route('list-in-object');
     })
   });
 

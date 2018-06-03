@@ -47,6 +47,10 @@ Router.map(function () {
       this.route('conditionals');
       this.route('list');
       this.route('list-in-object');
+    });
+    this.route('hbs-links',function () {
+      this.route('info');
+      this.route('record', { path: 'records/:records_id' });
     })
   });
 

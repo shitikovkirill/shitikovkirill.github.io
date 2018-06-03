@@ -52,7 +52,8 @@ Router.map(function () {
         this.route('record', { path: 'records/:records_id' });
       });
       this.route('hbs-actions');
-      this.route('hbs-input')
+      this.route('hbs-input');
+      this.route('writing-helpers');
     });
   });
 

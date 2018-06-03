@@ -44,7 +44,8 @@ Router.map(function () {
     });
     this.route('templates',function () {
       this.route('base');
-      this.route('conditionals')
+      this.route('conditionals');
+      this.route('list');
     })
   });
 

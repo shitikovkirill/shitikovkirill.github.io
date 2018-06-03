@@ -1,0 +1,32 @@
+<h1>Hello</h1>
+
+<button {{action "toggleBody"}} class="btn btn-lg btn-primary">{{title}}Toggle >>></button>
+
+
+{{#if isShowingBody}}
+  <h2>Welcome To Tutorials Point</h2>
+{{/if}}
+
+<hr>
+
+<button {{action "User" 'Kirill'}} class="btn btn-lg btn-warning">Parameter >>></button>
+<br>
+{{ user }}
+
+<hr>
+
+<button {{action "toggleEvent" on = 'click'}} class="btn btn-lg btn-danger">Event >>></button>
+{{#if isShowing}}
+  <h2>Welcome to TutorialsPoint</h2>
+{{/if}}
+<hr>
+
+<button {{action "toggleAllowedKeys" on = 'click' allowedKeys = "alt"}} class="btn btn-lg btn-info">Allowed Keys</button>
+{{#if isShowing2}}
+  <h2>Welcome to TutorialsPoint</h2>
+{{/if}}
+
+<hr>
+
+<label>Enter the name:</label>
+<input type="text" class="form-control" value={{yourName}} onblur={{action "actionFirstParameter" value = "target.value"}} />

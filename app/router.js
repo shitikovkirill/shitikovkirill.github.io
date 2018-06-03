@@ -50,7 +50,8 @@ Router.map(function () {
       this.route('hbs-links',function () {
         this.route('info');
         this.route('record', { path: 'records/:records_id' });
-      })
+      });
+      this.route('hbs-actions')
     });
   });
 

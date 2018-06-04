@@ -1,0 +1,27 @@
+<h2>Categories Page</h2>
+<form>
+  <label>ID:</label>
+  {{input value=newCategoryId}}
+  <label>NAME:</label>
+  {{input value = newCategoryName}}
+  <div>//when user adds records, the 'addNewCategory' function fires and adds
+    the records to model</div>
+  <button type = "submit" {{action 'addNewCategory' newCategoryId newCategoryName}}>
+    Add to list
+  </button>
+</form>
+
+<ul>
+  {{#each model as |category|}}
+    <li>
+      Id: {{category.id}}, Name: {{category.name}}
+      <div>//when user delete records, the ‘deleteCategory’ function fires and remove
+        the records from model</div>
+      <button {{action 'deleteCategory' category}}>Delete</button>
+    </li>
+  {{/each}}
+</ul>
+
+<div>//it counts the number of added records and removed records from the model</div>
+<strong>Category Counter: {{model.length}}</strong>
+{{outlet}}

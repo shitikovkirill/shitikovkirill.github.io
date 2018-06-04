@@ -58,6 +58,9 @@ Router.map(function () {
     this.route('components-tutor', function () {
       this.route('lifecycle');
     })
+    this.route('models', function() {
+      this.route('categories');
+    });
   });
 
   this.route('modules', function () {

@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend ({
+export default Route.extend ({
   beforeModel() {
     //open the beforemodel.hbs page to display the data
     this.transitionTo('tutorial.routes.redirecting.target');

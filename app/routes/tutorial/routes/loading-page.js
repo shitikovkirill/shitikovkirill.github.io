@@ -1,8 +1,11 @@
 import Ember from 'ember';
+import Route from '@ember/routing/route';
+import { Promise } from 'rsvp';
 
-export default Ember.Route.extend ({
+
+export default Route.extend ({
   model() {
-    return new Ember.RSVP.Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
       setTimeout(function () {
         resolve({});
       }, 1500);

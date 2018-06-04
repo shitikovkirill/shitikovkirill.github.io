@@ -60,6 +60,7 @@ Router.map(function () {
     })
     this.route('models', function() {
       this.route('categories');
+      this.route('relationships');
     });
   });
 

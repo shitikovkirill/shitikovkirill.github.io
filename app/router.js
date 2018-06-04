@@ -55,6 +55,9 @@ Router.map(function () {
       this.route('hbs-input');
       this.route('writing-helpers');
     });
+    this.route('components-tutor', function () {
+      this.route('lifecycle');
+    })
   });
 
   this.route('modules', function () {

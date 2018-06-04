@@ -1,0 +1,13 @@
+<div>
+  <p>appName: {{input type = "text" value = appName}}</p>
+  <p>Triggers: didUpdateAttrs, didReceiveAttrs, willUpdate, willRender,
+    didUpdate, didRender</p>
+</div>
+
+<div>
+  <p>data.a: {{input type = "text" value = data.a}}</p>
+</div>
+<hr>
+
+{{component-lifecycle name = appName data = data}}
+{{outlet}}

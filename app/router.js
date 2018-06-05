@@ -62,6 +62,9 @@ Router.map(function () {
       this.route('categories');
       this.route('relationships');
     });
+    this.route('application-concerns', function () {
+      this.route('dependency-injection');
+    })
   });
 
   this.route('modules', function () {

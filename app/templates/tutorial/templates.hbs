@@ -1,14 +1,31 @@
 <div class="row">
   <div class="col-md-3">
-    {{#link-to 'tutorial.templates.base'}}Templates base{{/link-to}}<br>
-    {{#link-to 'tutorial.templates.conditionals'}}Conditionals{{/link-to}}<br>
-    {{#link-to 'tutorial.templates.list'}}List{{/link-to}}<br>
-    {{#link-to 'tutorial.templates.list-in-object'}}List in object{{/link-to}}<br>
-    {{#link-to 'tutorial.templates.hbs-links'}}Links{{/link-to}}<br>
-    {{#link-to 'tutorial.templates.hbs-actions'}}Actions{{/link-to}}<br>
-    {{#link-to 'tutorial.templates.hbs-input'}}Input{{/link-to}}<br>
-    {{#link-to 'tutorial.templates.writing-helpers'}}Writing helpers{{/link-to}}<br>
-
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        {{#link-to 'tutorial.templates.base'}}Templates base{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.templates.conditionals'}}Conditionals{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.templates.list'}}List{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.templates.list-in-object'}}List in object{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.templates.hbs-links'}}Links{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.templates.hbs-actions'}}Actions{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.templates.hbs-input'}}Input{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.templates.writing-helpers'}}Writing helpers{{/link-to}}
+      </li>
+    </ul>
   </div>
   <div class="col-md-9">
     {{outlet}}

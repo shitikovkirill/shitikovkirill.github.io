@@ -1,17 +1,27 @@
 <div class="row">
-  <div class="col-md-2">
-    <ul class="nav">
+  <div class="col-md-3">
+    <ul class="nav flex-column">
       <li class="nav-item">
-        {{#link-to 'tutorial.objects'}}Object{{/link-to}}<br>
-        {{#link-to 'tutorial.routes'}}Route{{/link-to}}<br>
-        {{#link-to 'tutorial.templates'}}Templates{{/link-to}}<br>
-        {{#link-to 'tutorial.components-tutor'}}Components{{/link-to}}<br>
-        {{#link-to 'tutorial.models'}}Models{{/link-to}}<br>
-        {{#link-to 'tutorial.application-concerns'}}Application concerns{{/link-to}}<br>
+        {{#link-to 'tutorial.objects' class='nav-link'}}Object{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.routes' class='nav-link'}}Route{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.templates' class='nav-link'}}Templates{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.components-tutor' class='nav-link'}}Components{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.models' class='nav-link'}}Models{{/link-to}}
+      </li>
+      <li class="nav-item">
+        {{#link-to 'tutorial.application-concerns' class='nav-link'}}Application concerns{{/link-to}}<br>
       </li>
     </ul>
   </div>
-  <div class="col-md-10">
+  <div class="col-md-9">
     {{outlet}}
   </div>
 </div>

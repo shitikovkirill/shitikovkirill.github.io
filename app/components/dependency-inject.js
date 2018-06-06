@@ -4,15 +4,22 @@ var inject = Ember.inject;
 export default Ember.Component.extend ({
   //load the service in the file /app/services/message.js
   message: inject.service(),
-  message: 'Click the above button to change text!!!',
+  text: 'Click the above button to change text!!!',
+
   actions: {
     pressMe: function () {
 
       //after clicking button, above message will get display at console
-      var testText = this.get('start').thisistest();
-      this.set('message', testText);
-      //after clicking button, it will enter in the component page
-      this.get('logger').log('Entered in component!');
+      let testText = this.get('message').thisistest();
+      this.set('text', testText);
+      this.get('logger').log('Services load from /app/services/message.js (by property name)');
+    },
+
+    useAutoLoad: function() {
+
+      let testText = this.get('start').thisistest();
+      this.set('text', testText);
+      this.get('logger').log('Start property load from init initialiser.');
     },
 
     scheduleTasks: function () {

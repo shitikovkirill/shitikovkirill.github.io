@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 //it is an application initializer that run as your application boots
 export function initialize(application) {
-  var Logger = Ember.Object.extend({
+  let Logger = Ember.Object.extend({
     log(m) {
       console.log(m);
     }

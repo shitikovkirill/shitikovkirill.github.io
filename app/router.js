@@ -10,6 +10,7 @@ Router.map(function () {
   this.route('youtube', function () {
     this.route('reddit', {path: 'reddit/:subreddit'});
     this.route('model');
+    this.route('component');
   });
 
   this.route('book', function () {

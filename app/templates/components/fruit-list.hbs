@@ -1,0 +1,20 @@
+{{ input value=textValue}}
+<button {{ action 'add' textValue }}>Add</button>
+
+<div>
+  arrayOfFruits:
+  <ul>
+    {{#each arrayOfFruits as |fruit|}}
+      <li>{{fruit}}</li>
+    {{/each}}
+  </ul>
+
+  arrayOfFruits2:
+  <ul>
+    {{#each arrayOfFruits2 as |fruit|}}
+      <li>{{fruit}}</li>
+    {{/each}}
+  </ul>
+  Params: {{params}}
+</div>
+

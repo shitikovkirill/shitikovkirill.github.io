@@ -5,7 +5,8 @@
 <br>
 <br>
 <hr>
-{{#office-stapler as |prop| }}
+{{#office-stapler action="pressed" sendlog=(action "log") as |prop| }}
   Inner text here <br>
-  Number: {{prop.number}} <br>
+  Number: {{prop.mynumber}} <br>
+  Color: {{prop.color}} <br>
 {{/office-stapler}}
